@@ -1,4 +1,4 @@
-import { DUMMY_NEWS } from './dummy-news';
+import { DUMMY_NEWS } from "./dummy-news";
 
 export function getAllNews() {
   return DUMMY_NEWS;
@@ -10,12 +10,18 @@ export function getLatestNews() {
 
 export function getAvailableNewsYears() {
   return DUMMY_NEWS.reduce((years, news) => {
-    const year = new Date(news.date).getFullYear();
-    if (!years.includes(year)) {
-      years.push(year);
+    const currentYear = new Date(news.date).getFullYear();
+
+    const includesYear = years.some((year) => year?.title === currentYear);
+
+    if (!includesYear) {
+      years.push({
+        title: currentYear,
+        link: currentYear,
+      });
     }
     return years;
-  }, []).sort((a, b) => b - a);
+  }, []).sort((a, b) => b?.title - a?.title);
 }
 
 export function getAvailableNewsMonths(year) {

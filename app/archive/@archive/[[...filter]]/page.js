@@ -6,15 +6,15 @@ import Link from "next/link";
 export default function YearPage({ params }) {
   const year = params?.filter?.[0];
   const news = getNewsForYear(year);
-  const links = getAvailableNewsYears();
+  const newsYears = getAvailableNewsYears();
   return (
     <>
       <header id="archive-header">
         <nav>
           <ul>
-            {links.map((link) => (
+            {newsYears.map(({ title, link }) => (
               <Link href={`/archive/${link}`}>
-                <h2>{link}</h2>
+                <h2>{title}</h2>
               </Link>
             ))}
           </ul>
