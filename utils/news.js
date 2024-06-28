@@ -21,16 +21,21 @@ export function getAvailableNewsYears() {
       });
     }
     return years;
-  }, []).sort((a, b) => b?.title - a?.title);
+  }, []).sort((a, b) => b - a);
 }
 
 export function getAvailableNewsMonths(year) {
   return DUMMY_NEWS.reduce((months, news) => {
     const newsYear = new Date(news.date).getFullYear();
+    
     if (newsYear === +year) {
-      const month = new Date(news.date).getMonth();
-      if (!months.includes(month)) {
-        months.push(month + 1);
+      const currentMonth = new Date(news.date).getMonth();
+      const includesMonth = months.some((month) => month?.title === currentMonth);
+      if (!includesMonth) {
+        months.push({
+          title: currentMonth + 1,
+          link: `${year}/${currentMonth + 1}`
+        });
       }
     }
     return months;

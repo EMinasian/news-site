@@ -1,31 +1,27 @@
-import { getNewsForYear } from "@/utils/news";
+import {
+  getAvailableNewsMonths,
+  getNewsForYear,
+  getNewsForYearAndMonth,
+} from "@/utils/news";
 import NewsList from "@/components/NewsList";
+import NavigationBar from "@/components/NavigationBar";
 import { getAvailableNewsYears } from "@/utils/news";
-import Link from "next/link";
 
 export default function YearPage({ params }) {
-  const year = params?.filter?.[0];
-  const news = getNewsForYear(year);
+  const [year, month] = params?.filter;
+
   const newsYears = getAvailableNewsYears();
+  const newsMonths = getAvailableNewsMonths(year);
+  const news = month
+    ? getNewsForYearAndMonth(year, month)
+    : getNewsForYear(year);
+
   return (
     <>
       <header id="archive-header">
-        <nav>
-          <ul>
-            {newsYears.map(({ title, link }) => (
-              <Link href={`/archive/${link}`}>
-                <h2>{title}</h2>
-              </Link>
-            ))}
-          </ul>
-        </nav>
+        <NavigationBar items={newsMonths ? newsMonths : newsYears} />
       </header>
-      {params?.filter && (
-        <div>
-          <h2>Year {year}</h2>
-          <NewsList news={news} />
-        </div>
-      )}
+      {params?.filter && <NewsList news={news} />}
     </>
   );
 }
