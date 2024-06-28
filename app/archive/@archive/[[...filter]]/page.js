@@ -8,7 +8,8 @@ import NavigationBar from "@/components/NavigationBar";
 import { getAvailableNewsYears } from "@/utils/news";
 
 export default function YearPage({ params }) {
-  const [year, month] = params?.filter;
+  console.log("params, params", params);
+  const [year, month] = params?.filter ? params?.filter : [];
 
   const newsYears = getAvailableNewsYears();
   const newsMonths = getAvailableNewsMonths(year);
@@ -19,7 +20,9 @@ export default function YearPage({ params }) {
   return (
     <>
       <header id="archive-header">
-        <NavigationBar items={newsMonths ? newsMonths : newsYears} />
+        <NavigationBar
+          items={newsMonths.length !== 0 ? newsMonths : newsYears}
+        />
       </header>
       {params?.filter && <NewsList news={news} />}
     </>
