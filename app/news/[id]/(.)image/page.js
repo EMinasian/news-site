@@ -7,9 +7,12 @@ export default function NewsImagePage({ params }) {
 
   return (
     <>
-      <h1>Intercepted</h1>
-      <div className="image-container">
-        <Image src={`/images/news/${item.image}`} fill />
+      <div className="modal-backdrop">
+        <dialoge className="modal" open>
+          <div className="image-container">
+            <Image src={`/images/news/${item.image}`} fill />
+          </div>
+        </dialoge>
       </div>
     </>
   );
