@@ -7,15 +7,15 @@ import NewsList from "@/components/NewsList";
 import NavigationBar from "@/components/NavigationBar";
 import { getAvailableNewsYears } from "@/utils/news";
 
-export default function YearPage({ params }) {
+export default async function YearPage({ params }) {
   console.log("params, params", params);
   const [year, month] = params?.filter ? params?.filter : [];
 
-  const newsYears = getAvailableNewsYears();
-  const newsMonths = getAvailableNewsMonths(year);
+  const newsYears = await getAvailableNewsYears();
+  const newsMonths = await getAvailableNewsMonths(year);
   const news = month
-    ? getNewsForYearAndMonth(year, month)
-    : getNewsForYear(year);
+    ? await getNewsForYearAndMonth(year, month)
+    : await getNewsForYear(year);
 
   return (
     <>

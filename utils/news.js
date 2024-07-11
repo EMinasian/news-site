@@ -1,15 +1,24 @@
-import { DUMMY_NEWS } from "./dummy-news";
+import getNews from "./getNews";
 
-export function getAllNews() {
-  return DUMMY_NEWS;
+export async function getAllNews() {
+  const newsItems = await getNews()
+  return newsItems;
 }
 
-export function getLatestNews() {
-  return DUMMY_NEWS.slice(0, 3);
+export async function getNewsItemById(id) {
+  const newsItems = await getNews()
+  const newsItem = newsItems.find((item) => item.slug === id);
+  return newsItem
 }
 
-export function getAvailableNewsYears() {
-  return DUMMY_NEWS.reduce((years, news) => {
+export async function getLatestNews() {
+  const newsItems = await getNews()
+  return newsItems.slice(0, 3);
+}
+
+export async function getAvailableNewsYears() {
+  const newsItems = await getNews()
+  return newsItems.reduce((years, news) => {
     const currentYear = new Date(news.date).getFullYear();
 
     const includesYear = years.some((year) => year?.title === currentYear);
@@ -24,8 +33,9 @@ export function getAvailableNewsYears() {
   }, []).sort((a, b) => b - a);
 }
 
-export function getAvailableNewsMonths(year) {
-  return DUMMY_NEWS.reduce((months, news) => {
+export async function getAvailableNewsMonths(year) {
+  const newsItems = await getNews()
+  return newsItems.reduce((months, news) => {
     const newsYear = new Date(news.date).getFullYear();
     
     if (newsYear === +year) {
@@ -42,14 +52,16 @@ export function getAvailableNewsMonths(year) {
   }, []).sort((a, b) => b - a);
 }
 
-export function getNewsForYear(year) {
-  return DUMMY_NEWS.filter(
+export async function getNewsForYear(year) {
+  const newsItems = await getNews()
+  return newsItems.filter(
     (news) => new Date(news.date).getFullYear() === +year
   );
 }
 
-export function getNewsForYearAndMonth(year, month) {
-  return DUMMY_NEWS.filter((news) => {
+export async function getNewsForYearAndMonth(year, month) {
+  const newsItems = await getNews()
+  return newsItems.filter((news) => {
     const newsYear = new Date(news.date).getFullYear();
     const newsMonth = new Date(news.date).getMonth() + 1;
     return newsYear === +year && newsMonth === +month;
