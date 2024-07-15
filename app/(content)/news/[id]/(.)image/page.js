@@ -1,28 +1,20 @@
-"use client";
-
 import { getAllNews } from "@/utils/news";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
+import ModalBackdrop from "@/components/ModalBackdrop";
 
-export default function NewsImagePage({ params }) {
-  const news = getAllNews();
+export default async function NewsImagePage({ params }) {
+  const news = await getAllNews();
   const item = news.find(({ slug }) => slug === params.id);
-  const router = useRouter();
 
   return (
     <>
-      <div
-        className="modal-backdrop"
-        onClick={() => {
-          router.back();
-        }}
-      >
+      <ModalBackdrop>
         <dialoge className="modal" open>
           <div className="image-container">
             <Image src={`/images/news/${item.image}`} fill />
           </div>
         </dialoge>
-      </div>
+      </ModalBackdrop>
     </>
   );
 }
