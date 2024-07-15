@@ -1,17 +1,11 @@
-import {
-  getAvailableNewsMonths,
-  getNewsForYear,
-  getNewsForYearAndMonth,
-} from "@/utils/news";
+import { getNewsForYear, getNewsForYearAndMonth } from "@/utils/news";
 import NewsList from "@/components/NewsList";
 import NavigationBar from "@/components/NavigationBar";
-import { getAvailableNewsYears } from "@/utils/news";
+import { Suspense } from "react";
 
 export default async function YearPage({ params }) {
   const [year, month] = params?.filter ? params?.filter : [];
 
-  const newsYears = await getAvailableNewsYears();
-  const newsMonths = await getAvailableNewsMonths(year);
   const news = month
     ? await getNewsForYearAndMonth(year, month)
     : await getNewsForYear(year);
@@ -19,11 +13,11 @@ export default async function YearPage({ params }) {
   return (
     <>
       <header id="archive-header">
-          <NavigationBar
-            items={newsMonths.length !== 0 ? newsMonths : newsYears}
-          />
+        <Suspense fallback={<p>Suspence for navigation bar...</p>}>
+          <NavigationBar year={year} />
+        </Suspense>
       </header>
-        {params?.filter && <NewsList news={news} />}
+      {params?.filter && <NewsList news={news} />}
     </>
   );
 }
