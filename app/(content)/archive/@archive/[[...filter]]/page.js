@@ -3,12 +3,16 @@ import NewsList from "@/components/NewsList";
 import NavigationBar from "@/components/NavigationBar";
 import { Suspense } from "react";
 
-export default async function YearPage({ params }) {
-  const [year, month] = params?.filter ? params?.filter : [];
-
+async function News({ year, month }) {
   const news = month
     ? await getNewsForYearAndMonth(year, month)
     : await getNewsForYear(year);
+
+  return <NewsList news={news} />;
+}
+
+export default async function YearPage({ params }) {
+  const [year, month] = params?.filter ? params?.filter : [];
 
   return (
     <>
@@ -17,7 +21,9 @@ export default async function YearPage({ params }) {
           <NavigationBar year={year} />
         </Suspense>
       </header>
-      {params?.filter && <NewsList news={news} />}
+      <Suspense fallback={<p>Suspence for news section...</p>}>
+        <News year={year} month={month} />
+      </Suspense>
     </>
   );
 }
